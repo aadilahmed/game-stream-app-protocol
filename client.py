@@ -1,6 +1,8 @@
 import sys
 from typing import Dict
+from quic_stream import EchoQuicConnection, QuicStreamEvent
 import json
+import pdu
 
 
 def app_startup():
@@ -39,9 +41,11 @@ def main_menu():
             print("Invalid choice. Please try again!")
 
 
-def game_stream():
-    print("In game!")
-    sys.exit(0)
+async def game_stream(conn:EchoQuicConnection):
+    print("[cli] Starting game")
+    print("[cli] Begin entering inputs: ")
+
+    
 
 
 if __name__ == "__main__":
