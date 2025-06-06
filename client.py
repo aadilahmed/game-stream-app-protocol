@@ -45,7 +45,18 @@ async def game_stream(conn:EchoQuicConnection):
     print("[cli] Starting game")
     print("[cli] Begin entering inputs: ")
 
-    
+    while True:
+        data = input("[cli] Enter an input: ")[0]
+        datagram = pdu.Datagram(pdu.VERSION_NUM, data, 1, 1, 1)
+
+        new_stream_id = conn.new_stream()
+
+        qs = QuicStreamEvent(new_stream_id, datagram.to_bytes(), True)
+        await conn.send(qs)
+        message:QuicStreamEvent = await conn.receive()
+        dgram_resp = pdu.Datagram.from_bytes(message.data)
+
+        print(f"[cli] Server received '{dgram_resp.data}' input")
 
 
 if __name__ == "__main__":
