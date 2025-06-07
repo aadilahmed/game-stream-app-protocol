@@ -1,7 +1,5 @@
 import sys
-from typing import Dict
 from quic_stream import EchoQuicConnection, QuicStreamEvent
-import json
 import pdu
 
 
@@ -33,7 +31,7 @@ def main_menu():
         option = input("Select an option: ")
 
         if option == '1':
-            game_stream()
+            game_stream_client()
         elif option == '2':
             print("You are logging out.\n")
             app_startup()
@@ -41,7 +39,7 @@ def main_menu():
             print("Invalid choice. Please try again!")
 
 
-async def game_stream(conn:EchoQuicConnection):
+async def game_stream_client(conn:EchoQuicConnection):
     print("[cli] Starting game")
     print("[cli] Begin entering inputs: ")
 
@@ -51,10 +49,10 @@ async def game_stream(conn:EchoQuicConnection):
 
         new_stream_id = conn.new_stream()
 
-        qs = QuicStreamEvent(new_stream_id, datagram.to_bytes(), True)
+        qs = QuicStreamEvent(new_stream_id, datagram.to_bytes(), False)
         await conn.send(qs)
-        message:QuicStreamEvent = await conn.receive()
-        dgram_resp = pdu.Datagram.from_bytes(message.data)
+        msg:QuicStreamEvent = await conn.receive()
+        dgram_resp = pdu.Datagram.from_bytes(msg.data)
 
         print(f"[cli] Server received '{dgram_resp.data}' input")
 
