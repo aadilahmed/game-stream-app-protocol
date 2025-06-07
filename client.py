@@ -1,11 +1,16 @@
 import sys
+import asyncio
+from aioquic.quic.configuration import QuicConfiguration
+from aioquic.asyncio import connect
+from aioquic.asyncio.protocol import QuicConnectionProtocol
 from quic_stream import EchoQuicConnection, QuicStreamEvent
 import pdu
 
 
-def app_startup():
+async def app_startup(conn:EchoQuicConnection):
     print('Welcome to the game streaming app!')
 
+    # Sign in menu
     while True:
         option = input('Enter 1 to login or enter 2 to exit: ')
 
@@ -14,7 +19,7 @@ def app_startup():
             password = input("Enter password: ")
             if username == "user" and password == "password":
                 print("Login successful!")
-                main_menu()
+                await main_menu(conn)
             else:
                 print("Login failed.")
         elif option == '2':
@@ -23,7 +28,8 @@ def app_startup():
         else:
             print("Invalid choice. Please try again!")
 
-def main_menu():
+async def main_menu(conn:EchoQuicConnection):
+    # Main menu to select game
     while True:
         print("\nMenu: ")
         print("1. Start game")
@@ -31,10 +37,10 @@ def main_menu():
         option = input("Select an option: ")
 
         if option == '1':
-            game_stream_client()
+            await game_stream_client(conn)
         elif option == '2':
             print("You are logging out.\n")
-            app_startup()
+            await app_startup(conn)
         else:
             print("Invalid choice. Please try again!")
 
@@ -55,7 +61,3 @@ async def game_stream_client(conn:EchoQuicConnection):
         dgram_resp = pdu.Datagram.from_bytes(msg.data)
 
         print(f"[cli] Server received '{dgram_resp.data}' input")
-
-
-if __name__ == "__main__":
-    app_startup()

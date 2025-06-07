@@ -2,7 +2,6 @@ import json
 
 VERSION_NUM = 0x00
 
-
 class Datagram:
     def __init__(self, version: int, data: str, game_id: int, user_id: int, itype: int):
         self.version = version
