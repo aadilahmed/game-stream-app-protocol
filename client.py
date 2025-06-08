@@ -6,7 +6,7 @@ from aioquic.asyncio.protocol import QuicConnectionProtocol
 from quic_stream import EchoQuicConnection, QuicStreamEvent
 import pdu
 
-
+# Startup screen and login menu for application
 async def app_startup(conn:EchoQuicConnection):
     print('Welcome to the game streaming app!')
 
@@ -28,8 +28,9 @@ async def app_startup(conn:EchoQuicConnection):
         else:
             print("Invalid choice. Please try again!")
 
+# Main menu to select game or logout
 async def main_menu(conn:EchoQuicConnection):
-    # Main menu to select game
+    
     while True:
         print("\nMenu: ")
         print("1. Start game")
@@ -44,7 +45,7 @@ async def main_menu(conn:EchoQuicConnection):
         else:
             print("Invalid choice. Please try again!")
 
-
+# Client which sends user inputs to server through quic
 async def game_stream_client(conn:EchoQuicConnection):
     print("[cli] Starting game")
     print("[cli] Begin entering inputs: ")

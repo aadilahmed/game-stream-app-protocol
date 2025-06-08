@@ -2,6 +2,7 @@ import asyncio
 import pdu
 from quic_stream import EchoQuicConnection, QuicStreamEvent
 
+# Server implementation to receive datagram from client and echo back to client
 async def game_stream_server(conn:EchoQuicConnection):
     while True:
         msg:QuicStreamEvent = await conn.receive()

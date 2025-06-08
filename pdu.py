@@ -2,6 +2,7 @@ import json
 
 VERSION_NUM = 0x00
 
+# Class that defines the PDU design for this application
 class Datagram:
     def __init__(self, version: int, data: str, game_id: int, user_id: int, itype: int):
         self.version = version
